@@ -1,0 +1,526 @@
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(80px) scale(0.8); /* Más movimiento y reducción inicial */
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+
+
+.homePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    background-color: #000000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInDown 0.8s ease-out forwards;
+}
+
+.navLeft, .navRight {
+    display: flex;
+    gap: 120px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logoImg {
+    height: 55px;
+}
+
+.navLeft a{
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 70px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+
+}
+
+ .navRight a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 70px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+
+
+}
+
+.navLeft a::after, .navRight a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0;
+    height: 5px;
+    background-color: #c66414;
+    transition: width 0.3s ease;
+}
+
+.navLeft a:hover, .navRight a:hover {
+    color: #727272;
+}
+
+.navLeft a:hover::after, .navRight a:hover::after {
+    width: 100%;
+}
+
+.heroImage {
+    height: 100vh; /* Ocupa todo el alto de la pantalla */
+    position: relative; /* Para posicionar el texto encima */
+    margin-bottom: 40px; /* Espacio antes de la sección de peleadores */
+}
+
+.heroImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para cubrir todo el espacio */
+}
+
+.heroText {
+    position: absolute; /* Superpone el texto encima de la imagen */
+    top: 60%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta el centro */
+    text-align: center;
+    color: #ffffff; /* Texto blanco */
+    padding: 40px;
+    border-radius: 8px;
+    max-width: 900px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* Sombra para el texto */
+}
+
+.heroText h2 {
+    font-size: 48px; /* Tamaño grande para el título */
+    margin-bottom: 20px;
+    color: white;
+}
+
+.heroText p {
+    font-size: 24px; /* Tamaño grande para el texto */
+}
+
+.fightersSection {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.fightersSection h3 {
+    font-size: 20px;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.fightersGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 20px; /* Espacio entre las tarjetas */
+}
+
+.fighterCard {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.fighterImg {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.fighterCard p {
+    font-size: 16px;
+    color: #333333;
+}
+
+/* Estilos para el footer */
+.footer {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    margin-top: auto; /* Para que el footer siempre esté abajo */
+}
+
+.footerContent {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.footer p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555555;
+}
+
+.footer a {
+    color: #1890ff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.socialMedia {
+    margin: 10px 0;
+}
+
+.socialMedia a {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #1890ff;
+}
+
+.userLink {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacio entre el icono y el texto */
+    font-size: 18px;
+    text-decoration: none;
+    color: white; /* Ajusta según tu diseño */
+}
+
+.userIcon {
+    font-size: 24px; /* Tamaño del icono */
+}
+
+
+.userContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.userMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.userContainer:hover .userMenu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.userMenu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+.userMenu a:hover {
+    background-color: #f5f5f5;
+}
+
+.adminContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - 150px);
+    padding: 40px 60px;
+    box-sizing: border-box;
+  }
+  
+  
+  .adminMenu {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 40px 30px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .adminMenu li {
+    padding: 18px 0;
+    font-size: 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+  
+  
+  .adminMenu ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  
+  .adminMenu li:last-child {
+    border-bottom: none;
+  }
+  
+  .adminMenu li:hover {
+    color: #c66414;
+  }
+  
+  .profileCard {
+    flex: 1;
+    margin-left: 40px;
+    background-color: #f9f9f9;
+    padding: 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    font-size: 20px; 
+    width: 800px;
+  }
+  
+  
+ 
+
+  .profileCard h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .profileCard p {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  
+
+  /* Estilos para el contenedor principal */
+.adminContainer {
+    display: flex;
+    min-height: calc(100vh - 120px);
+}
+
+/* Menú lateral */
+.adminMenu {
+    width: 250px;
+    background: #f8f9fa;
+    padding: 20px 0;
+    border-right: 1px solid #e0e0e0;
+}
+
+.adminMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.adminMenu li {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.adminMenu li:hover {
+    background-color: #e9ecef;
+}
+
+.adminMenu li.active {
+    background-color: #c66414;
+    color: white;
+    font-weight: bold;
+}
+
+/* Sección de contenido */
+.contentSection {
+    flex: 1;
+    padding: 30px;
+    background: white;
+}
+
+/* Tarjeta de perfil */
+.profileCard {
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.profileImg {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #c66414;
+}
+
+
+/* Sección de peleador */
+.fighterPrompt, .fighterProfile {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.fighterInfo {
+    background-color: #f0f2f5; /* Fondo suave */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    text-align: left;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .fighterInfo p {
+    margin: 10px 0;
+    line-height: 1.4;
+  }
+  
+  .editButton {
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #1890ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .editButton:hover {
+    background-color: #40a9ff;
+  }
+  
+
+/* Formulario */
+.createForm {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Botones */
+.createButton, .editButton, .changePasswordButton {
+    background-color: #c66414;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.createButton:hover, .editButton:hover, .changePasswordButton:hover {
+    background-color: #984d0f;
+}
+
+.saveButton {
+    background-color: #52c41a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.saveButton:hover {
+    background-color: #3daa13;
+}
+
+.cancelButton {
+    background-color: #f5222d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cancelButton:hover {
+    background-color: #d41a24;
+}
+  
+  
