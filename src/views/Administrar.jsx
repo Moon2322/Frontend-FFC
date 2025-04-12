@@ -5,6 +5,11 @@ import { FaUserCircle } from "react-icons/fa";
 import logo from './../assets/FFC_logo.png';
 import { Snackbar, Alert } from "@mui/material";
 import { motion } from 'framer-motion'; 
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase/firebase.js';
+import ProfileImage from '../components/ProfileImage.jsx';
+import ProfileImageWithUpload from '../components/ProfileImageWithUpload.jsx';
+
 
 
 function Administrar() {
@@ -35,26 +40,44 @@ function Administrar() {
                 setTimeout(() => navigate('/login'), 2000);
                 return;
             }
-
+    
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                const user = {
-                    id: payload.userId,
-                    firstName: payload.firstName,
-                    lastName: payload.lastName,
-                    email: payload.email
-                };
-                setUserData(user);
-
-                await checkFighterProfile(user.id);
+                
+                // Obtener datos del usuario con la imagen
+                const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    
+                    // Si no tiene imagen, asignar predeterminada
+                    if (!userData.profileImage) {
+                        const defaultImage = await getDefaultProfileImage();
+                        userData.profileImage = defaultImage;
+                    }
+                    
+                    setUserData({
+                        ...userData,
+                        id: payload.userId
+                    });
+                }
+    
+                await checkFighterProfile(payload.userId);
             } catch (error) {
-                console.error("Error decodificando token:", error);
+                console.error("Error:", error);
                 handleLogout();
             }
         };
-
+    
         checkAuthAndLoad();
     }, [navigate]);
+
+
+    
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -65,6 +88,27 @@ function Administrar() {
         navigate(route);
     };
 
+// Agrega esta función para actualizar la imagen
+const handleImageUpload = async (newUrl) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/update-profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ profileImage: newUrl })
+      });
+      
+      if (response.ok) {
+        setUserData(prev => ({...prev, profileImage: newUrl }));
+        setSuccessMessage('Imagen actualizada correctamente');
+      }
+    } catch (error) {
+      console.error("Error actualizando perfil:", error);
+    }
+  };
+ 
     const checkFighterProfile = async (userId) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/peleador/${userId}`, {
@@ -231,29 +275,33 @@ function Administrar() {
         </div>
     );
 
-    const renderContent = () => {
-        switch(selectedSection) {
-            case "perfil":
-                return (
-                    <div className={styles.profileCard}>
-                        <img
-                            src="https://a.espncdn.com/combiner/i?img=/i/headshots/mma/players/full/3027545.png"
-                            alt="Foto de perfil"
-                            className={styles.profileImg}
-                        />
-                        {userData ? (
-                            <>
-                                <h2>{userData.firstName} {userData.lastName}</h2>
-                                <p>Apellido: {userData.lastName}</p>
-                                <p>Email: {userData.email}</p>
-                                <button 
-                                    className={styles.changePasswordButton}
-                                >
-                                    Cambiar Contraseña
-                                </button>
-                            </>
-                        ) : (
-                            <p>Cargando datos del usuario...</p>
+// Actualiza la sección de perfil
+const renderContent = () => {
+    switch(selectedSection) {
+        case "perfil":
+            return (
+                <div className={styles.profileCard}>
+              {userData && userData.profileImage !== undefined && (
+  <ProfileImageWithUpload
+    src={userData.profileImage}
+    userId={userData._id}
+    onUpload={handleImageUpload}
+  />
+)}
+
+                    {userData ? (
+                        <>
+                            <h2>{userData.firstName} {userData.lastName}</h2>
+                            <p>Email: {userData.email}</p>
+                            <button 
+                                className={styles.changePasswordButton}
+/*                                 onClick={() => navigate('/cambiar-password')}
+ */                            >
+                                Cambiar Contraseña
+                            </button>
+                        </>
+                    ) : (
+                        <p>Cargando datos del usuario...</p>
                         )}
                     </div>
                 );
@@ -301,8 +349,8 @@ function Administrar() {
                     <img src={logo} alt="Logo" onClick={() => handleNavigation("/Home")} className={styles.logoImg} />
                 </div>
                 <div className={styles.navRight}>
-                    <a onClick={() => handleNavigation("/rankings")}>Rankings</a>
-                    <div
+                     <a /* onClick={() => handleNavigation("/rankings")} */>Rankings</a>
+                     <div
                         className={styles.userContainer}
                         onMouseEnter={() => setMenuOpen(true)}
                         onMouseLeave={() => setMenuOpen(false)}

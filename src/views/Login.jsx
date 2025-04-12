@@ -160,8 +160,8 @@ function Login() {
                     <span>O</span>
                 </div>
 
-                <button className={styles.googleButton}>Continuar con Google</button>
-
+{/*                 <button className={styles.googleButton}>Continuar con Google</button>
+ */}
                 <p className={styles.helpText}>
                     ¿No puedes iniciar sesión?{' '}
                     <a href="/Forgot_password" style={{ cursor: 'pointer', color: '#1890ff' }}>

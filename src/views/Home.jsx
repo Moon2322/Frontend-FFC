@@ -6,6 +6,8 @@ import logo from './../assets/FFC_logo.png';
 import Pelea from './../assets/pelea2.jpeg'; 
 import { motion } from 'framer-motion'; 
 import { Snackbar, Alert } from "@mui/material";
+import { getDefaultProfileImage } from '../firebase/firebase';
+
 
 function Home() {
     const navigate = useNavigate();
@@ -14,6 +16,21 @@ function Home() {
     const [firstName, setFirstName] = useState('');
     const [latestFighters, setLatestFighters] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [defaultImage, setDefaultImage] = useState('');
+
+
+    useEffect(() => {
+        const loadDefaultImage = async () => {
+            try {
+                const url = await getDefaultProfileImage();
+                setDefaultImage(url);
+            } catch (error) {
+                console.error("Error cargando imagen predeterminada:", error);
+            }
+        };
+        loadDefaultImage();
+    }, []);
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -84,14 +101,14 @@ function Home() {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
             >
-                <div className={styles.fighterImage}>
-                    {fighter.fotoPerfil ? (
-                        <img src={fighter.fotoPerfil} alt={fighter.nombre} />
-                    ) : (
-                        <div className={styles.defaultImage}>
-                            <FaUserCircle size={60} />
-                        </div>
-                    )}
+                                   <div className={styles.fighterImage}>
+                                        <img 
+                  src={fighter.userId?.profileImage || defaultImage}
+                  alt={fighter.nombre}
+                  onError={async (e) => {
+                    e.target.src = await getDefaultProfileImage();
+                  }}
+                />
                 </div>
                 <div className={styles.fighterInfo}>
                     <h4>{fighter.nombre}</h4>
@@ -136,8 +153,8 @@ function Home() {
                     <img src={logo} alt="Logo" onClick={() => handleNavigation("/Home")} className={styles.logoImg} />
                 </div>
                 <div className={styles.navRight}>
-                    <a onClick={() => handleNavigation("/rankings")}>Rankings</a>
-                    <div 
+                     <a /* onClick={() => handleNavigation("/rankings")} */>Rankings</a>
+                 <div 
                         className={styles.userContainer}
                         onMouseEnter={() => setMenuOpen(true)}
                         onMouseLeave={() => setMenuOpen(false)}

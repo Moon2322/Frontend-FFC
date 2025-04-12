@@ -5,6 +5,8 @@ import { FaUserCircle, FaWeight, FaCalendarAlt, FaFireAlt } from "react-icons/fa
 import logo from './../assets/FFC_logo.png'; 
 import { Snackbar, Alert } from "@mui/material";
 import { motion } from 'framer-motion'; 
+import { getDefaultProfileImage } from '../firebase/firebase';
+
 
 function Eventos() {
     const navigate = useNavigate();
@@ -117,36 +119,47 @@ function Eventos() {
 </div>
 
 <div className={styles.fighter}>
-  <div className={styles.fighterImage}>
-    {event.peleador1.fotoPerfil ? (
-      <img src={event.peleador1.fotoPerfil} alt={event.peleador1.nombre} />
-    ) : (
-      <div className={styles.defaultImage}>
-        <FaUserCircle size={40} />
-      </div>
-    )}
-  </div>
-  <div className={styles.fighterInfo}>
-    <h4>{event.peleador1.nombre}</h4>
-    <div className={styles.fighterStats}>
-      <div>
-        <FaWeight className={styles.icon} />
-        <span>{event.peleador1.peso} kg</span>
-      </div>
-      <div>
-        <FaFireAlt className={styles.icon} />
-        <span>{event.peleador1.estiloCombate}</span>
+    <div className={styles.fighterImage}>
+      {event.peleador1?.usuario?.profileImage ? (
+        <img 
+          src={event.peleador1.usuario.profileImage} 
+          alt={event.peleador1.nombre} 
+          onError={async (e) => {
+            e.target.src = await getDefaultProfileImage();
+          }}
+        />
+      ) : (
+        <div className={styles.defaultImage}>
+          <FaUserCircle size={40} />
+        </div>
+      )}
+    </div>
+    <div className={styles.fighterInfo}>
+      <h4>{event.peleador1.nombre}</h4>
+      <div className={styles.fighterStats}>
+        <div>
+          <FaWeight className={styles.icon} />
+          <span>{event.peleador1.peso} kg</span>
+        </div>
+        <div>
+          <FaFireAlt className={styles.icon} />
+          <span>{event.peleador1.estiloCombate}</span>
+        </div>
       </div>
     </div>
-  </div>
-
                     
                     <div className={styles.vsBadge}>VS</div>
                     
                     <div className={styles.fighter}>
-  <div className={styles.fighterImage}>
-    {event.peleador1.fotoPerfil ? (
-      <img src={event.peleador1.fotoPerfil} alt={event.peleador1.nombre} />
+                    <div className={styles.fighterImage}>
+      {event.peleador2?.usuario?.profileImage ? (
+        <img 
+          src={event.peleador2.usuario.profileImage} 
+          alt={event.peleador2.nombre} 
+          onError={async (e) => {
+            e.target.src = await getDefaultProfileImage();
+          }}
+        />
     ) : (
       <div className={styles.defaultImage}>
         <FaUserCircle size={40} />
@@ -154,15 +167,15 @@ function Eventos() {
     )}
   </div>
   <div className={styles.fighterInfo}>
-    <h4>{event.peleador1.nombre}</h4>
+    <h4>{event.peleador2.nombre}</h4>
     <div className={styles.fighterStats}>
       <div>
         <FaWeight className={styles.icon} />
-        <span>{event.peleador1.peso} kg</span>
+        <span>{event.peleador2.peso} kg</span>
       </div>
       <div>
         <FaFireAlt className={styles.icon} />
-        <span>{event.peleador1.estiloCombate}</span>
+        <span>{event.peleador2.estiloCombate}</span>
       </div>
                             </div>
                         </div>
@@ -201,7 +214,7 @@ function Eventos() {
                     <img src={logo} alt="Logo" onClick={() => handleNavigation("/Home")} className={styles.logoImg} />
                 </div>
                 <div className={styles.navRight}>
-                    <a onClick={() => handleNavigation("/rankings")}>Rankings</a>
+                    <a /* onClick={() => handleNavigation("/rankings")} */>Rankings</a>
                     <div 
                         className={styles.userContainer}
                         onMouseEnter={() => setMenuOpen(true)}
@@ -228,7 +241,7 @@ function Eventos() {
     onClick={() => navigate('/CrearEvento')}
     className={styles.generateButton}
   >
-    Crear Evento Manualmente
+    Crear Evento 
   </button>
 )}
         </div>

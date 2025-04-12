@@ -5,6 +5,8 @@ import { FaUserCircle, FaWeight, FaRulerVertical, FaFistRaised } from "react-ico
 import logo from './../assets/FFC_logo.png'; 
 import { Snackbar, Alert } from "@mui/material";
 import { motion } from 'framer-motion'; 
+import { getDefaultProfileImage } from '../firebase/firebase';
+
 
 function Peleadores() {
     const navigate = useNavigate();
@@ -13,6 +15,20 @@ function Peleadores() {
     const [firstName, setFirstName] = useState('');
     const [fighters, setFighters] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [defaultImage, setDefaultImage] = useState('');
+
+
+    useEffect(() => {
+        const loadDefaultImage = async () => {
+            try {
+                const url = await getDefaultProfileImage();
+                setDefaultImage(url);
+            } catch (error) {
+                console.error("Error cargando imagen predeterminada:", error);
+            }
+        };
+        loadDefaultImage();
+    }, []);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -89,13 +105,13 @@ function Peleadores() {
                         whileTap={{ scale: 0.98 }}
                     >
                         <div className={styles.fighterImage}>
-                            {fighter.fotoPerfil ? (
-                                <img src={fighter.fotoPerfil} alt={fighter.nombre} />
-                            ) : (
-                                <div className={styles.defaultImage}>
-                                    <FaUserCircle size={80} />
-                                </div>
-                            )}
+                        <img 
+  src={fighter.userId?.profileImage || defaultImage}
+  alt={fighter.nombre}
+  onError={async (e) => {
+    e.target.src = await getDefaultProfileImage();
+  }}
+/>
                         </div>
                         <div className={styles.fighterInfo}>
                             <h3>{fighter.nombre}</h3>
@@ -152,7 +168,7 @@ function Peleadores() {
                     <img src={logo} alt="Logo" onClick={() => handleNavigation("/Home")} className={styles.logoImg} />
                 </div>
                 <div className={styles.navRight}>
-                    <a onClick={() => handleNavigation("/rankings")}>Rankings</a>
+                    <a /* onClick={() => handleNavigation("/rankings")} */>Rankings</a>
                     <div 
                         className={styles.userContainer}
                         onMouseEnter={() => setMenuOpen(true)}
